@@ -23,14 +23,12 @@ function Todo() {
   }
 
   useEffect(() => {
-    if (todos.length < 1) {
       fetch("https://jsonplaceholder.typicode.com/todos")
         .then((response) => response.json())
         .then((data) => {
           setTodos([...todos, ...data.map((item) => item.title)]);
         });
-    }
-  });
+  },[]);
 
 
   return (
