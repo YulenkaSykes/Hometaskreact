@@ -27,7 +27,7 @@ function Todo() {
       fetch("https://jsonplaceholder.typicode.com/todos")
         .then((response) => response.json())
         .then((data) => {
-          setTodos([...todos, ...data.map((e) => e.title)]);
+          setTodos([...todos, ...data.map((item) => item.title)]);
         });
     }
   });

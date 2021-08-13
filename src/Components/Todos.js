@@ -1,16 +1,10 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import React from 'react'
 
 
 export default function Todo(props) {
     const {todo, n, deleteTodo} = props;
     const [done, setDone] = useState(false)
-
-    useEffect(() => {
-        return () => {
-          setDone(false);
-        };
-      }, []);
 
     return (
         <div className={`todos ${done &&"done"}`}>
