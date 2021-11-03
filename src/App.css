@@ -30,3 +30,6 @@ input {
 .done {
   opacity: 0.3;
 }
+.create{
+  font-size: 25px;
+}
