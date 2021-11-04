@@ -1,18 +1,40 @@
-import { useState } from "react";
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
+import Todo from "./Todo";
+import styles from "../styles/todos.module.scss";
+import { Context } from "../App";
 
-export default function Todo(props) {
-  const { todo, n, deleteTodo } = props;
-  const [done, setDone] = useState(false);
+const Todos = () => {
+  const { todos, setTodos, setTodo } = useContext(Context);
+  // const [todos, setTodos] = useState(
+  //   localStorage.getItem("todo") ? JSON.parse(localStorage.getItem("todo")) : []
+  // );
+  const [search, setSearch] = useState("");
+
+  const deleteTodo = (text) => {
+    setTodos(todos.filter((e) => e !== text));
+  };
 
   return (
-    <div className={`todos ${done && "done"}`}>
-      <div className="list">
-        <input type="checkbox" onChange={() => setDone(!done)} />
-        <span>{n}.</span>
-        <span>{todo}</span>
-      </div>
-      <button onClick={() => deleteTodo(todo)}>Delete</button>
+    <div className={`col centered sp-btw ${styles.todos}`}>
+      <input
+        className={styles.input}
+        type="text"
+        onChange={(e) => {
+          setSearch(e.target.value);
+        }}
+      />
+      {search.length > 0
+        ? todos
+            .filter((e) => e.title.includes(search))
+            .map((e, i) => (
+              <Todo n={i} todo={e} deleteTodo={deleteTodo} setTodo={setTodo} />
+            ))
+        : todos.length > 0 &&
+          todos.map((e, i) => (
+            <Todo n={i} todo={e} deleteTodo={deleteTodo} setTodo={setTodo} />
+          ))}
     </div>
   );
-}
+};
+
+export default Todos;

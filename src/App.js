@@ -1,56 +1,55 @@
-import { useEffect, useState } from "react";
+import React, { useState, createContext, useEffect } from "react";
+import "./App.scss";
 import Todos from "./Components/Todos";
-import "./App.css";
+import Create from "./Components/Create";
+import styles from "./styles/header.module.scss";
+import Card from "./Components/Card";
 
-function Todo() {
-  const [todos, setTodos] = useState([]);
-  const [value, setValue] = useState("");
-  const [search, setSearch] = useState("");
+export const Context = createContext(null);
 
-  const handleChange = (e) => {
-    setValue(e.target.value);
-  };
+function App() {
+  const [tab, setTab] = useState("Todos");
+  const tabs = ["Todos", "Create"];
+  const [todo, setTodo] = useState();
 
-  const handleClick = () => {
-    setTodos([...todos, value]);
-    setValue("");
-  };
+  const [todos, setTodos] = useState(
+    localStorage.getItem("todo") ? JSON.parse(localStorage.getItem("todo")) : []
+  );
 
-  const deleteTodo = (text) => {
-    setTodos(todos.filter((e) => e !== text));
-  };
+  useEffect(() => {
+    localStorage.setItem("todo", JSON.stringify(todos));
+  }, [todos]);
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/todos")
       .then((response) => response.json())
       .then((data) => {
-        setTodos([...todos, ...data.map((item) => item.title)]);
+        setTodos(
+          [...data.slice(0, 11), ...todos].filter(
+            (obj, i, arr) => arr.findIndex((elm) => elm.id === obj.id) === i
+          )
+        );
       });
   }, []);
 
   return (
-    <div className="todo">
-      <h1>TodoShka</h1>
-      <div>
-        <h1 className="create">Create todo</h1>
-        <input type="text" onChange={handleChange} value={value} />
-        <button onClick={handleClick}>Add todo</button>
-      </div>
-      <h2>Search everything in the world</h2>
-      <input
-        type="text"
-        onChange={(e) => {
-          setSearch(e.target.value);
-        }}
-      />
-      {search.length > 0
-        ? todos
-            .filter((e) => e.includes(search))
-            .map((e, i) => <Todos n={i} todo={e} deleteTodo={deleteTodo} />)
-        : todos.length > 0 &&
-          todos.map((e, i) => <Todos n={i} todo={e} deleteTodo={deleteTodo} />)}
+    <div className="App centered col">
+      <header className={`${styles.header} row centered`}>
+        {tabs.map((e) => (
+          <button onClick={() => setTab(e)}>{e}</button>
+        ))}
+      </header>
+      <Context.Provider value={{ todos, setTodos, setTodo }}>
+        {todo ? (
+          <Card todo={todo} setTodo={setTodo} />
+        ) : tab === "Todos" ? (
+          <Todos />
+        ) : (
+          tab === "Create" && <Create />
+        )}
+      </Context.Provider>
     </div>
   );
 }
 
-export default Todo;
+export default App;
