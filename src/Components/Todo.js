@@ -8,10 +8,10 @@ export default function Todo(props) {
 
   return (
     <div className={`row sp-btw ${styles.todo} ${done && "done"}`}>
-      <div className={styles.list} onClick={() => setTodo(todo)}>
+      <div className={styles.list}>
         <input type="checkbox" onChange={() => setDone(!done)} />
         <span>{n}.</span>
-        <span>{todo.title}</span>
+        <span onClick={() => setTodo(todo)}>{todo.title}</span>
       </div>
       <button onClick={() => deleteTodo(todo)}>Delete</button>
     </div>
