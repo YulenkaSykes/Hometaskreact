@@ -4,21 +4,11 @@ import Alert from "@material-ui/lab/Alert";
 
 const Create = () => {
   const { todos, setTodos } = useContext(Context);
-  //   const [todos, setTodos] = useState(
-  //     localStorage.getItem("todo") ? JSON.parse(localStorage.getItem("todo")) : []
-  //   );
+
   const [value, setValue] = useState("");
   const [click, setClick] = useState(false);
-  //   const [alert, setAlert] = useState(true);
 
   const handleClick = () => {
-    // localStorage.setItem(
-    //   "todo",
-    //   JSON.stringify([
-    //     ...todos,
-    //     { userId: 1, id: todos.length, title: value, completed: true },
-    //   ])
-    // );
     setTodos([
       ...todos,
       { userId: 1, id: todos.length, title: value, completed: true },

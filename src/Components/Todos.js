@@ -5,9 +5,7 @@ import { Context } from "../App";
 
 const Todos = () => {
   const { todos, setTodos, setTodo } = useContext(Context);
-  // const [todos, setTodos] = useState(
-  //   localStorage.getItem("todo") ? JSON.parse(localStorage.getItem("todo")) : []
-  // );
+
   const [search, setSearch] = useState("");
 
   const deleteTodo = (text) => {
